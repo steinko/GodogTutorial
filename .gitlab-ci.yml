@@ -11,7 +11,7 @@ before_script:
 stages:
   - integration
 
-test-integraion:
-  stage: integraion
+test-integration:
+  stage: integration
   script:
     - go test
