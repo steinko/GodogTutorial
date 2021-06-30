@@ -1,0 +1,17 @@
+image: golang:latest
+
+variables:
+  REPO_NAME: https://github.com/steinko/GodogTutorial
+
+before_script:
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME/hello
+
+stages:
+  - integration
+
+test-integraion:
+  stage: integraion
+  script:
+    - go test
