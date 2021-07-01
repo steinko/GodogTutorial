@@ -21,4 +21,4 @@ test-acceptance:
   stage: integration
   script:
     - cd ../godogs
-    - go godog
+    - godog
