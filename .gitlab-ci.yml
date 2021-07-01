@@ -15,3 +15,9 @@ test-integration:
   stage: integration
   script:
     - go test
+
+test-acceptance:
+  stage: integration
+  script:
+    - cd ../godogs
+    - go godog

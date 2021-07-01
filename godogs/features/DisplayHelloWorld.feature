@@ -1,10 +1,10 @@
 Feature: Display Hello World
   In order to test godog
   As a developer
-  I need to display "Hello World"
+  I need to display "Hi, Stein , Welcome"
   
   Scenario: Display Hello World
     Given application is developed
     When run application
-    Then display "Hello World"
+    Then display "Hi, Stein. Welcome!"
      

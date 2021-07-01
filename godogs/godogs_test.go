@@ -1,24 +1,28 @@
 package main
 
 import (
+	     "os"
          "github.com/cucumber/godog"
+         "github.com/cucumber/godog/colors"
+         flag "github.com/spf13/pflag"
          "github.com/stretchr/testify/assert"
-         "example.com/greetings"
+         "testing"
+         "fmt"
        )
 
-type scenario struct{}
-func (_ *scenario) assert(a assertion, expected, actual interface{}, msgAndArgs ...interface{}) error {
-    var t asserter
-    a(&t, expected, actual, msgAndArgs...)
-    return t.err
-}
+
 
 func applicationIsDeveloped() error {
 	return nil
 }
 
-func (sc *scenario)display(message string) error {
-	return sc.assert(assert.Equal,message, greetings.Hello("Hello World"))
+func display(expectedMessage string) error {
+	var actualMessage =  hello("Stein")
+	return  assertExpectedAndActual(
+		assert.Equal, expectedMessage, actualMessage,
+		"Expected messag to be %d  but actualMessage  is %d", 
+		expectedMessage, actualMessage,
+	)
 }
 
 func runApplication() error {
@@ -30,3 +34,40 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^display "([^"]*)"$`, display)
 	ctx.Step(`^run application$`, runApplication)
 }
+
+
+var opts = godog.Options{Output: colors.Colored(os.Stdout)}
+
+func init() {
+	godog.BindCommandLineFlags("godog.", &opts)
+}
+
+func TestMain(m *testing.M) {
+	
+	    flag.Parse()
+	    opts.Paths = flag.Args()
+
+	    status := godog.TestSuite{
+		       Name:                "godogs",
+		       ScenarioInitializer: InitializeScenario,
+		       Options:             &opts,
+	    }.Run()
+	    os.Exit(status)
+}
+
+func assertExpectedAndActual(a expectedAndActualAssertion, expected, actual interface{}, msgAndArgs ...interface{}) error {
+	var t asserter
+	a(&t, expected, actual, msgAndArgs...)
+	return t.err
+}
+
+type expectedAndActualAssertion func(t assert.TestingT, expected, actual interface{}, msgAndArgs ...interface{}) bool
+
+type asserter struct {
+	err error
+}
+
+func (a *asserter) Errorf(format string, args ...interface{}) {
+	a.err = fmt.Errorf(format, args...)
+}
+
