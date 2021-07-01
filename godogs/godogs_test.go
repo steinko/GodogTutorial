@@ -3,8 +3,6 @@ package main
 import (
 	     "os"
          "github.com/cucumber/godog"
-         "github.com/cucumber/godog/colors"
-         flag "github.com/spf13/pflag"
          "github.com/stretchr/testify/assert"
          "testing"
          "fmt"
@@ -39,23 +37,14 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^run application$`, runApplication)
 }
 
-var opts = godog.Options{Output: colors.Colored(os.Stdout)}
-
-
-func init() {
-	godog.BindCommandLineFlags("godog.", &opts)
-}
-
 
 func TestMain(m *testing.M) {
 	
-	    flag.Parse()
-	    opts.Paths = flag.Args()
 
 	    status := godog.TestSuite{
 		       Name:                "godogs",
 		       ScenarioInitializer: InitializeScenario,
-		       Options:             &opts,
+		       
 	    }.Run()
 	    os.Exit(status)
 }
