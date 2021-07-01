@@ -11,23 +11,27 @@ import (
        )
 
 
-
 func applicationIsDeveloped() error {
 	return nil
 }
 
+
 func display(expectedMessage string) error {
+	
 	var actualMessage =  hello("Stein")
 	return  assertExpectedAndActual(
 		assert.Equal, expectedMessage, actualMessage,
 		"Expected messag to be %d  but actualMessage  is %d", 
 		expectedMessage, actualMessage,
 	)
+	
 }
+
 
 func runApplication() error {
 	return nil
 }
+
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^application is developed$`, applicationIsDeveloped)
@@ -35,12 +39,13 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^run application$`, runApplication)
 }
 
-
 var opts = godog.Options{Output: colors.Colored(os.Stdout)}
+
 
 func init() {
 	godog.BindCommandLineFlags("godog.", &opts)
 }
+
 
 func TestMain(m *testing.M) {
 	
@@ -55,6 +60,7 @@ func TestMain(m *testing.M) {
 	    os.Exit(status)
 }
 
+
 func assertExpectedAndActual(a expectedAndActualAssertion, expected, actual interface{}, msgAndArgs ...interface{}) error {
 	var t asserter
 	a(&t, expected, actual, msgAndArgs...)
@@ -66,6 +72,7 @@ type expectedAndActualAssertion func(t assert.TestingT, expected, actual interfa
 type asserter struct {
 	err error
 }
+
 
 func (a *asserter) Errorf(format string, args ...interface{}) {
 	a.err = fmt.Errorf(format, args...)

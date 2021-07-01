@@ -4,7 +4,7 @@ variables:
   REPO_NAME: https://github.com/steinko/GodogTutorial
 
 before_script:
-  - go get github.com/cucumber/godog/cmd/godog@v0.11.0
+  - go get github.com/cucumber/godog/cmd/godog
   - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
   - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
   - set PATH=$PATH:$HOME/go/bin
@@ -24,4 +24,4 @@ test-acceptance:
   stage: integration
   script:
     - cd ../godogs
-    - godog
+    - godog    
