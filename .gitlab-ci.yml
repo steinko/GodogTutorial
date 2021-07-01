@@ -6,6 +6,7 @@ variables:
 before_script:
   - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
   - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - set PATH=$PATH:$HOME/go/bin
   - cd $GOPATH/src/$REPO_NAME/hello
 
 stages:
