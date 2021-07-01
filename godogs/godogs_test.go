@@ -32,31 +32,35 @@ func runApplication() error {
 
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
+	
 	ctx.Step(`^application is developed$`, applicationIsDeveloped)
 	ctx.Step(`^display "([^"]*)"$`, display)
 	ctx.Step(`^run application$`, runApplication)
+	
 }
 
+//Linking Godog to testify
 
 func TestMain(m *testing.M) {
 	
-
 	    status := godog.TestSuite{
-		       Name:                "godogs",
-		       ScenarioInitializer: InitializeScenario,
-		       
-	    }.Run()
+		            ScenarioInitializer: InitializeScenario,       
+	              }.Run()
 	    os.Exit(status)
 }
 
 
-func assertExpectedAndActual(a expectedAndActualAssertion, expected, actual interface{}, msgAndArgs ...interface{}) error {
+func assertExpectedAndActual(a expectedAndActualAssertion, expected, actual interface{}, msgAndArgs ...interface{}) error{
+	
 	var t asserter
 	a(&t, expected, actual, msgAndArgs...)
 	return t.err
+	
 }
 
+
 type expectedAndActualAssertion func(t assert.TestingT, expected, actual interface{}, msgAndArgs ...interface{}) bool
+
 
 type asserter struct {
 	err error
@@ -64,6 +68,8 @@ type asserter struct {
 
 
 func (a *asserter) Errorf(format string, args ...interface{}) {
+	
 	a.err = fmt.Errorf(format, args...)
+	
 }
 
