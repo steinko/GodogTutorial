@@ -21,6 +21,7 @@ stages:
 test-integration:
   stage: integration
   script:
+    - cd hello
     - go test
 
 test-acceptance:
