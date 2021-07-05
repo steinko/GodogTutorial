@@ -18,15 +18,10 @@ before_script:
 stages:
   - integration
 
-test-integration:
-  stage: integration
-  script:
-    - cd hello
-    - go test
 
 test-acceptance:
   stage: integration
   script:
     - go get github.com/cucumber/godog/cmd/godog
-    - cd ../godogs
+    - cd godogs
     - godog    
