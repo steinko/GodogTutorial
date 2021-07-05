@@ -1,15 +1,16 @@
-image: golang:latest
-
-variables:
-  REPO_NAME: https://github.com/steinko/GodogTutorial
+image: ubuntu
 
 before_script:
-  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
-  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
-  - export PATH=$PATH:$HOME/go/bin
-  - cd $GOPATH/src/$REPO_NAME/hello
+  - set -e -x
+  - apt update -y
+  - apt upgrade -y
+  - apt install curl -y
+  - curl -fsSL https://golang.org/dl/go1.16.5.linux-amd64.tar.gz  /usr/local| sh
+  - rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.5.linux-amd64.tar.gz
+  - export PATH=$PATH:/usr/local/go/bin
   - echo $HOME
   - echo $PATH
+  - echo $GOPATH
 
 stages:
   - integration
