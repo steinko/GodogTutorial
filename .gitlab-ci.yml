@@ -16,11 +16,6 @@ before_script:
 stages:
   - integration
 
-test-integration:
-  stage: integration
-  script:
-    - go test -race $(go list ./... | grep -v /vendor/)
-
 test-acceptance:
   stage: integration
   script:
