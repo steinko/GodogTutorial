@@ -1,28 +1,27 @@
-image: ubuntu
+mage: golang:latest
+
+variables:
+  REPO_NAME: github.com/steinko/GodogTutorial
 
 before_script:
-  - set -e -x
-  - apt update -y
-  - apt upgrade -y
-  - apt install curl -y
-  - cd /usr/local
-  - curl -LO https://golang.org/dl/go1.16.5.linux-amd64.tar.gz
-  - rm -rf /usr/local/go && tar -C /usr/local -xzf go1.16.5.linux-amd64.tar.gz
-  - export PATH=$PATH:/usr/local/go/bin
-  - export PATH= $PATH:$HOME/go/bin
+  - go get github.com/cucumber/godog/cmd/godog
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - set PATH=$PATH:$HOME/go/bin
+  - cd $GOPATH/src/$REPO_NAME/hello
   - echo $HOME
   - echo $PATH
-  - echo $GOPATH
-  - cd /builds/continuosedeliverydeveloopemnt/continuosedelivery/GodogTutorial
-  - pwd
 
 stages:
   - integration
 
+test-integration:
+  stage: integration
+  script:
+    - go test
 
 test-acceptance:
   stage: integration
   script:
-    - go get github.com/cucumber/godog/cmd/godog
-    - cd godogs
+    - cd ../godogs
     - godog    
