@@ -1,8 +1,12 @@
 image: golang:latest
 
- 
+variables:
+  REPO_NAME: gitlab.com/continuosedeliverydeveloopemnt/improvment/continuosedelivery/GodogTutorial
 
 before_script:
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME
   - go get github.com/cucumber/godog/cmd/godog
   - set PATH=$PATH:$HOME/go/bin
   - echo $HOME
@@ -14,7 +18,7 @@ stages:
 test-integration:
   stage: integration
   script:
-    - go test
+    - go test -race $(go list ./... | grep -v /vendor/)
 
 test-acceptance:
   stage: integration
