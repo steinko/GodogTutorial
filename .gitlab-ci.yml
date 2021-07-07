@@ -25,5 +25,5 @@ test-acceptance:
   stage: integration
   script:
     - pwd
-    - cd ../godogs
+    - cd /godogs
     - godog    
