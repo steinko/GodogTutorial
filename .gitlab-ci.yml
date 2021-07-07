@@ -27,4 +27,5 @@ test-acceptance:
     - pwd
     - cd godogs
     - go mod tidy
-    - godog    
+    - go test
+  

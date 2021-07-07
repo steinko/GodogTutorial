@@ -6,6 +6,8 @@ import (
          "github.com/stretchr/testify/assert"
          "testing"
          "fmt"
+         "github.com/cucumber/godog/colors"
+	      flag "github.com/spf13/pflag"
        )
 
 
@@ -41,11 +43,28 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 //Linking Godog to testify
 
+var opts = godog.Options{
+	Output: colors.Colored(os.Stdout),
+	Format: "progress", // can define default values
+}
+
+func init() {
+	godog.BindCommandLineFlags("godog.", &opts)        // godog v0.11.0 (latest)
+}
+
 func TestMain(m *testing.M) {
-	
-	    status := godog.TestSuite{
-		            ScenarioInitializer: InitializeScenario,       
-	              }.Run()
+    flag.Parse()
+	opts.Paths = flag.Args()
+
+    status := godog.TestSuite{
+        Name: "godogs",
+		ScenarioInitializer:  InitializeScenario,
+		Options: &opts,     
+	   }.Run()
+	   
+	if st := m.Run(); st > status {
+		status = st
+	}
 	    os.Exit(status)
 }
 
