@@ -1,4 +1,4 @@
-mage: golang:latest
+image: golang:latest
 
 variables:
   REPO_NAME: github.com/steinko/GodogTutorial
